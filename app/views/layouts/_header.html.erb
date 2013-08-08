@@ -1,14 +1,16 @@
 <header class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <ul class="nav pull-right nav-pills">
-          <li><%= link_to "Home", explorer_home_path %></li>
+          <h1 class='nav pull-left'><%= link_to "Explorer", explorer_home_path %><small>Find the Perfect Place to Vacation</small></h1>
           <%= render 'devise/menu/registration_items' %>
           <%= render 'devise/menu/login_items' %>
-          <button id='nightlife'>NightLife</button>
-          <button id='trending'>Trending</button>
-          <button id='cafes'>Cafes</button>
-          <button id='attractions'>Attractions</button>
-          <button id="showFavoritesButton">My Favorite's</button>
+          <div class="btn-group">
+          <button type="button" class="btn btn-default" id='nightlife'>NightLife</button>
+          <button type="button" class="btn btn-default" id='trending'>Trending</button>
+          <button type="button" class="btn btn-default" id='cafes'>Cafes</button>
+          <button type="button" class="btn btn-default" id='attractions'>Attractions</button>
+          <button type="button" class="btn btn-default" id="showFavoritesButton">My Favorite's</button>
+          </div>
       </ul>
      <div class="container">
     </div>

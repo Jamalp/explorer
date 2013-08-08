@@ -4,6 +4,7 @@ gem 'rails', '3.2.13'
 gem "leaflet-rails"
 gem 'expedia'
 gem 'yelpster'
+gem 'bootstrap-sass'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

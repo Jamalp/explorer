@@ -19,7 +19,7 @@ $(function () {
   L.Icon.Default.imagePath = 'http://api.tiles.mapbox.com/mapbox.js/v1.0.0beta0.0/images';
   var map = new L.Map("map", {
     center: new L.LatLng(40.748882568094665, -73.98931503295898),
-    zoom: 18
+    zoom: 13
   });
 
   // create a tile layer (or use other provider of your choice)
@@ -41,29 +41,33 @@ $(function () {
   }
 
 
-  var coffeeButton = $('#coffee');
-  var barsButton = $('#bars');
+  var cafesButton = $('#cafes');
+  var nightlifeButton = $('#nightlife');
   var trendingButton = $('#trending');
+  var attractionsButton = $('#attractions');
 
-  coffeeButton.click(function(event){
+  cafesButton.click(function(event){
     event.preventDefault();
-    buttonClickValue = coffeeButton.text();
+    buttonClickValue = cafesButton.text();
     $('.navbar').append(buttonClickValue);
   });
 
-  barsButton.click(function(event){
+  nightlifeButton.click(function(event){
    event.preventDefault();
-   buttonClickValue = barsButton.text();
+   buttonClickValue = nightlifeButton.text();
+   $('.navbar').append(buttonClickValue);
   });
 
   trendingButton.click(function(event){
     event.preventDefault();
     buttonClickValue = trendingButton.text();
+    $('.navbar').append(buttonClickValue);
   });
 
   $('#showFavoritesButton').click(function(event){
     event.preventDefault();
     buttonClickValue = "showFavorites";
+    $('.navbar').append(buttonClickValue);
     console.log("click");
     $.ajax({
       type: 'get',
@@ -174,12 +178,12 @@ $(function () {
     var lng = EMAPS.latlng.lng;
     var cord = lat + ',' + lng;
     var url = "";
-    if (buttonClickValue === "Trending"){
+    if (buttonClickValue === "trending"){
       url = 'https://api.foursquare.com/v2/venues/trending?ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-    } else if (buttonClickValue === "Coffee") {
+    } else if (buttonClickValue === "cafes") {
       url = 'https://api.foursquare.com/v2/venues/explore?section=coffee&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-    } else {
-      url = 'https://api.foursquare.com/v2/venues/explore?section=bars&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+    } else if (buttonClickValue === "nightlife") {
+      url = 'https://api.foursquare.com/v2/venues/explore?section=drinks&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
     }
     $.ajax({
       type: 'get',
@@ -188,7 +192,7 @@ $(function () {
     }).done(function(data){
       console.log(data);
       squareInfo = data;
-    if (buttonClickValue === "Trending"){
+    if (buttonClickValue === "trending"){
       setLocationTrending();
     } else if (buttonClickValue === "showFavorites"){
       setLocationFavorites();
