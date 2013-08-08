@@ -1,5 +1,48 @@
-.map { height: 180px; }
+@import "bootstrap";
 
-.logo {
-  color: red;
+/*.map { height: 180px; }*/
+
+.body {
+  background-color: #F4F2ED;
+}
+#logo a {
+  color: #627BFF;
+}
+
+#logo {
+  margin-right: 24em;
+}
+
+#headernav {
+  margin-bottom: auto;
+  height: 5%;
+}
+
+#containerlogo {
+  margin-bottom: 10em;
+  margin-right: 5em;
+  margin-left: 5em;
+  margin-top: 20em;
+}
+
+
+#sidebar {
+  float: left;
+  width: 10%;
+}
+
+#login {
+  float: right;
+}
+
+#map {
+  width: 90%;
+  height:600px;
+  border-radius: 5px;
+  background-color: white;
+  float: right;
+  margin-left: 1em;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 0;
 }

@@ -178,11 +178,11 @@ $(function () {
     var lng = EMAPS.latlng.lng;
     var cord = lat + ',' + lng;
     var url = "";
-    if (buttonClickValue === "trending"){
+    if (buttonClickValue === "Trending"){
       url = 'https://api.foursquare.com/v2/venues/trending?ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-    } else if (buttonClickValue === "cafes") {
+    } else if (buttonClickValue === "Cafes") {
       url = 'https://api.foursquare.com/v2/venues/explore?section=coffee&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-    } else if (buttonClickValue === "nightlife") {
+    } else if (buttonClickValue === "NightLife") {
       url = 'https://api.foursquare.com/v2/venues/explore?section=drinks&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
     }
     $.ajax({

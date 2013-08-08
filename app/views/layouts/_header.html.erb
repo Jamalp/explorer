@@ -1,18 +1,7 @@
-<header class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <ul class="nav pull-right nav-pills">
-          <h1 class='nav pull-left'><%= link_to "Explorer", explorer_home_path %><small>Find the Perfect Place to Vacation</small></h1>
-          <%= render 'devise/menu/registration_items' %>
-          <%= render 'devise/menu/login_items' %>
-          <div class="btn-group">
-          <button type="button" class="btn btn-default" id='nightlife'>NightLife</button>
-          <button type="button" class="btn btn-default" id='trending'>Trending</button>
-          <button type="button" class="btn btn-default" id='cafes'>Cafes</button>
-          <button type="button" class="btn btn-default" id='attractions'>Attractions</button>
-          <button type="button" class="btn btn-default" id="showFavoritesButton">My Favorite's</button>
-          </div>
-      </ul>
-     <div class="container">
-    </div>
-  </div>
-</header>
+<div id='headernav'class="navbar navbar-fixed-top">
+  <h1 id='logo'><%= link_to "Explorer", explorer_home_path %><small>Find the Perfect Place to Vacation</small></h1>
+    <ul id='login' class="nav nav-pills">
+      <li class='active'><%= render 'devise/menu/registration_items' %></li>
+      <li class="active"><%= render 'devise/menu/login_items' %></li>
+    </ul>
+</div>
