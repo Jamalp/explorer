@@ -1,4 +1,5 @@
 class Spot < ActiveRecord::Base
-  attr_accessible :name, :address, :rating
-  has_and_belongs_to_many :users
+  attr_accessible :name, :address, :latitude, :longitude
+  belongs_to :users
+  belongs_to :cities
 end
