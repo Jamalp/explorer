@@ -9,6 +9,8 @@ var buttonClickValue = "";
 var spotsArray = [];
 var favoritesArray = "";
 var favoritesMarkerArray = [];
+var defaultCitiesArray = "";
+var defaultCitiesMarkerArray = [];
 
 
 // put JS code in here
@@ -58,27 +60,35 @@ $(function () {
           //   }
           //   L.geoJson(statesData, {style: style}).addTo(map);
 
+  function markerClicked() {
+    console.log(this.getLatLng().lat);
+    lat = this.getLatLng().lat;
+    lng = this.getLatLng().lng;
+    map.setView(new L.LatLng(lat, lng), 13);
+    }
 
-
-
-  // var statesMap = L.map('map').setView([37.8, -96], 4);
-  // L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/{styleId}/256/{z}/{x}/{y}.png', {
-  //   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>;; contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/"&amp;gt;CC-BY-SA</a>;;, Imagery © <a href="http://cloudmade.com">;;CloudMade</a>;;',
-  //   styleId: 22677
-  // }).addTo(map);
-  // L.geoJson(statesData).addTo(map);
-
-
-
-
-
-
-  // create a tile layer (or use other provider of your choice)
-  // var layer = L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/997/256/{z}/{x}/{y}.png', {
-  //   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Contributors: <a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA</a>Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-  //   maxZoom: 18
-  // }).addTo(map);
-
+  function showCities(){
+   $.ajax({
+      type: 'get',
+      url: '/show/cities',
+      dataType: 'json'
+    }).done(function(data){
+      defaultCitiesArray = data;
+      for(var i = 0; i < defaultCitiesArray.length; i ++){
+        trend = new L.LatLng(defaultCitiesArray[i].latitude, defaultCitiesArray[i].longitude);
+        marker = new L.Marker(trend);
+        marker.bindPopup(defaultCitiesArray[i].name).openPopup();
+        map.addLayer(marker);
+        marker.on('click', markerClicked);
+        defaultCitiesMarkerArray.push(marker);
+      }
+    });
+  }
+  map.on('load', function(e) {
+      console.log("loaded");
+      showCities();
+    });
+  map.setView(new L.LatLng(37.8, -96), 5);
 
   function getYelp(){
    $.ajax({
@@ -183,7 +193,7 @@ $(function () {
       place = squareInfo.response.groups[0].items[i].venue.name;
       trend = new L.LatLng(lat, lng);
       var markers = new L.MarkerClusterGroup();
-      markers.addLayer(new L.Marker(getRandomLatLng(map)));
+      markers.addLayer(new L.Marker(trend(map)));
       marker = new L.Marker(trend);
       marker.bindPopup(place).openPopup();
       map.addLayer(marker);

@@ -26,6 +26,14 @@ class MapsController < ApplicationController
     end
   end
 
+  def show_cities
+    @cities = City.all
+      respond_to do |format|
+      format.html
+      format.json {render json: @cities}
+    end
+  end
+
   def yelp
     client = Yelp::Client.new
     request = GeoPoint.new(
