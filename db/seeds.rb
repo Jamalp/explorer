@@ -48,5 +48,5 @@ cities = City.create([{name: 'Miami, Fla',
                       {name: 'Honolulu, HI',
                         latitude: 21.3069,
                         longitude: 57.8583},
-                          ])
+                      ])
 

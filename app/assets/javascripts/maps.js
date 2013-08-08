@@ -19,14 +19,65 @@ $(function () {
   L.Icon.Default.imagePath = 'http://api.tiles.mapbox.com/mapbox.js/v1.0.0beta0.0/images';
   var map = new L.Map("map", {
     center: new L.LatLng(40.748882568094665, -73.98931503295898),
-    zoom: 13
-  });
+    zoom: 13,
+    minZoom: 0,
+    maxZoom: 18,
+    layers: [
+              L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/22677/256/{z}/{x}/{y}.png', {
+                 maxZoom: 13,
+                 minZoom: 0,
+                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>;; contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/"&amp;gt;CC-BY-SA</a>, Imagery ©<a href="http://cloudmade.com">CloudMade</a>',
+               }),
+
+              L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/997/256/{z}/{x}/{y}.png', {
+              maxZoom: 18,
+              minZoom: 14,
+              attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Contributors: <a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA</a>Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+            }
+          )]});
+          // function getColor(d) {
+          //     return d > 1000 ? '#800026' :
+          //            d > 500  ? '#BD0026' :
+          //            d > 200  ? '#E31A1C' :
+          //            d > 100  ? '#FC4E2A' :
+          //            d > 50   ? '#FD8D3C' :
+          //            d > 20   ? '#FEB24C' :
+          //            d > 10   ? '#FED976' :
+          //                       '#FFEDA0';
+
+          //   }
+          //   function style(feature) {
+          //     return {
+          //         fillColor: getColor(feature.properties.density),
+          //         weight: 2,
+          //         opacity: 1,
+          //         color: 'white',
+          //         dashArray: '3',
+          //         fillOpacity: 0.7,
+          //     };
+          //   }
+          //   L.geoJson(statesData, {style: style}).addTo(map);
+
+
+
+
+  // var statesMap = L.map('map').setView([37.8, -96], 4);
+  // L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/{styleId}/256/{z}/{x}/{y}.png', {
+  //   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>;; contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/"&amp;gt;CC-BY-SA</a>;;, Imagery © <a href="http://cloudmade.com">;;CloudMade</a>;;',
+  //   styleId: 22677
+  // }).addTo(map);
+  // L.geoJson(statesData).addTo(map);
+
+
+
+
+
 
   // create a tile layer (or use other provider of your choice)
-  var layer = L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/997/256/{z}/{x}/{y}.png', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Contributors: <a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA</a>Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-    maxZoom: 18
-  }).addTo(map);
+  // var layer = L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/997/256/{z}/{x}/{y}.png', {
+  //   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Contributors: <a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA</a>Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+  //   maxZoom: 18
+  // }).addTo(map);
 
 
   function getYelp(){
@@ -131,6 +182,8 @@ $(function () {
       lng = squareInfo.response.groups[0].items[i].venue.location.lng;
       place = squareInfo.response.groups[0].items[i].venue.name;
       trend = new L.LatLng(lat, lng);
+      var markers = new L.MarkerClusterGroup();
+      markers.addLayer(new L.Marker(getRandomLatLng(map)));
       marker = new L.Marker(trend);
       marker.bindPopup(place).openPopup();
       map.addLayer(marker);
