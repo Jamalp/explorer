@@ -2,7 +2,7 @@
 var EMAPS = {
   latlng: {}
 };
-var squareInfo = '';
+var squareInfo = "";
 var yelpData = "";
 var markerArray = [];
 var buttonClickValue = "";
@@ -11,138 +11,101 @@ var favoritesArray = "";
 var favoritesMarkerArray = [];
 var defaultCitiesArray = "";
 var defaultCitiesMarkerArray = [];
+var nearbyHotelsArray = [];
+var placeHash = "";
+var yelpObject = "";
 
 
 // put JS code in here
 $(function () {
 
+  var map = new L.Map('map');
+
+  function markerClicked() {
+  console.log(this.getLatLng().lat);
+  lat = this.getLatLng().lat;
+  lng = this.getLatLng().lng;
+  map.setView(new L.LatLng(lat, lng), 13);
+}
+
+  function showCities(){
+     $.ajax({
+        type: 'get',
+        url: '/show/cities',
+        dataType: 'json'
+      }).done(function(data){
+        defaultCitiesArray = data;
+        for(var i = 0; i < defaultCitiesArray.length; i ++){
+          trend = new L.LatLng(defaultCitiesArray[i].latitude, defaultCitiesArray[i].longitude);
+          marker = new L.Marker(trend);
+          marker.bindPopup(defaultCitiesArray[i].name).openPopup();
+          map.addLayer(marker);
+          marker.on('click', markerClicked);
+          defaultCitiesMarkerArray.push(marker);
+        }
+      });
+    }
+
+ // create a tile layer (or use other provider of your choice)
+  var layer = L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/997/256/{z}/{x}/{y}.png', {
+    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Contributors: <a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA</a>Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+    maxZoom: 18
+  }).addTo(map);
+
   // Call stuff down here somewhere
   // initialize the map on the "map" div
   L.Icon.Default.imagePath = 'http://api.tiles.mapbox.com/mapbox.js/v1.0.0beta0.0/images';
-  var map = new L.Map("map", {
-    center: new L.LatLng(40.748882568094665, -73.98931503295898),
-    zoom: 13,
-    minZoom: 0,
-    maxZoom: 18,
-    layers: [
-              L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/22677/256/{z}/{x}/{y}.png', {
-                 maxZoom: 13,
-                 minZoom: 0,
-                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>;; contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/"&amp;gt;CC-BY-SA</a>, Imagery ©<a href="http://cloudmade.com">CloudMade</a>',
-               }),
 
-              L.tileLayer('http://{s}.tile.cloudmade.com/d45604d5730341f19ea4d665294a9c76/997/256/{z}/{x}/{y}.png', {
-              maxZoom: 18,
-              minZoom: 14,
-              attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Contributors: <a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA</a>Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-            }
-          )]});
-          // function getColor(d) {
-          //     return d > 1000 ? '#800026' :
-          //            d > 500  ? '#BD0026' :
-          //            d > 200  ? '#E31A1C' :
-          //            d > 100  ? '#FC4E2A' :
-          //            d > 50   ? '#FD8D3C' :
-          //            d > 20   ? '#FEB24C' :
-          //            d > 10   ? '#FED976' :
-          //                       '#FFEDA0';
-
-          //   }
-          //   function style(feature) {
-          //     return {
-          //         fillColor: getColor(feature.properties.density),
-          //         weight: 2,
-          //         opacity: 1,
-          //         color: 'white',
-          //         dashArray: '3',
-          //         fillOpacity: 0.7,
-          //     };
-          //   }
-          //   L.geoJson(statesData, {style: style}).addTo(map);
-
-  function markerClicked() {
-    console.log(this.getLatLng().lat);
-    lat = this.getLatLng().lat;
-    lng = this.getLatLng().lng;
-    map.setView(new L.LatLng(lat, lng), 13);
-    }
-
-  function showCities(){
-   $.ajax({
-      type: 'get',
-      url: '/show/cities',
-      dataType: 'json'
-    }).done(function(data){
-      defaultCitiesArray = data;
-      for(var i = 0; i < defaultCitiesArray.length; i ++){
-        trend = new L.LatLng(defaultCitiesArray[i].latitude, defaultCitiesArray[i].longitude);
-        marker = new L.Marker(trend);
-        marker.bindPopup(defaultCitiesArray[i].name).openPopup();
-        map.addLayer(marker);
-        marker.on('click', markerClicked);
-        defaultCitiesMarkerArray.push(marker);
-      }
-    });
-  }
   map.on('load', function(e) {
-      console.log("loaded");
       showCities();
     });
+
   map.setView(new L.LatLng(37.8, -96), 5);
 
-  function getYelp(){
-   $.ajax({
-      type: 'get',
-      url: '/yelp',
-      dataType: 'json'
-    }).done(function(data){
-      console.log(data);
-      yelpData = data;
-    });
-  }
-
-
-  var cafesButton = $('#cafes');
-  var nightlifeButton = $('#nightlife');
+  var coffeeButton = $('#coffee');
+  var barsButton = $('#bars');
   var trendingButton = $('#trending');
-  var attractionsButton = $('#attractions');
 
-  cafesButton.click(function(event){
+   coffeeButton.click(function(event){
     event.preventDefault();
-    buttonClickValue = cafesButton.text();
-    $('.navbar').append(buttonClickValue);
+    buttonClickValue = coffeeButton.text();
+    coffeeButton.on('click', removeMarker());
+    // $('.navbar').append(buttonClickValue);
   });
 
-  nightlifeButton.click(function(event){
-   event.preventDefault();
-   buttonClickValue = nightlifeButton.text();
-   $('.navbar').append(buttonClickValue);
+   barsButton.click(function(event){
+    event.preventDefault();
+    buttonClickValue = barsButton.text();
+    barsButton.on('click', removeMarker());
   });
 
   trendingButton.click(function(event){
     event.preventDefault();
     buttonClickValue = trendingButton.text();
-    $('.navbar').append(buttonClickValue);
+    trendingButton.on('click', removeMarker());
   });
 
-  $('#showFavoritesButton').click(function(event){
-    event.preventDefault();
-    buttonClickValue = "showFavorites";
-    $('.navbar').append(buttonClickValue);
-    console.log("click");
-    $.ajax({
-      type: 'get',
-      url: '/favorite',
-      dataType: 'json'
-    }).done(function(data){
-      console.log(data);
-      favoritesArray = data;
+
+
+    $('#showFavoritesButton').click(function(event){
+      event.preventDefault();
+      buttonClickValue = "showFavorites";
+      console.log("click");
+     $.ajax({
+        type: 'get',
+        url: '/favorite',
+        dataType: 'json'
+      }).done(function(data){
+        console.log(data);
+        favoritesArray = data;
+      });
+      $('#showFavoritesButton').on('click', removeMarker());
+      $('#showFavoritesButton').on('click', setLocationFavorites());
     });
-  });
 
 
        //Show favorites
-  function setLocationFavorites(){
+    function setLocationFavorites(){
     for (var i = 0; i < favoritesArray.length; i ++){
       trend = new L.LatLng(favoritesArray[i].latitude, favoritesArray[i].longitude);
       marker = new L.Marker(trend);
@@ -152,7 +115,8 @@ $(function () {
     }
   }
 
-  //Remove favorites layer below
+    //Remove favorites layer below
+    function removeFavoritesLayer(){}
 
 
   //add marker to map
@@ -163,37 +127,73 @@ $(function () {
     //link to search for hotels nearyb
     //link to search for real estate nearby
   function setLocationTrending(){
-    //////trending
+    //////trending or hotels
     for (var i = 0; i < squareInfo.response.venues.length; i ++){
       lat = squareInfo.response.venues[i].location.lat;
       lng = squareInfo.response.venues[i].location.lng;
       place = squareInfo.response.venues[i].name;
+      city = squareInfo.response.venues[i].location.city;
+      state = squareInfo.response.venues[i].location.state;
       address = squareInfo.response.venues[i].location.address + ', ' + squareInfo.response.venues[i].location.city + ', ' + squareInfo.response.venues[i].location.state;
+      phone = squareInfo.response.venues[i].contact.formattedPhone;
+      website = squareInfo.response.venues[i].url;
       placeHash = {};
       placeHash['name']= place;
       placeHash['latitude']= lat;
       placeHash['longitude']= lng;
       placeHash['address']= address;
+      placeHash['city']= city;
+      console.log(city);
+      placeHash['state']= state;
+      console.log(state);
+      if (phone != 'undefined') {
+      placeHash['phone']= phone;
+      }
+      placeHash['website']= website;
       spotsArray.push(placeHash);
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
       popup = L.popup()
-      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button>w');
+      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">nearby hotels</button></br><button id="yelpButton">yelp review</button>');
       marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
     }
   }
 
+  $('#map').on('click', '#yelpButton', sendYelp);
+
+
+    //send the object to be used in the yelp request to the controller
+    function sendYelp(){
+      objectForYelp = spotsArray[$('.placeName').attr('Id')];
+      console.log(objectForYelp);
+      var searchSpot = {"name" : objectForYelp.name,
+                      "latitude" : objectForYelp.latitude,
+                      "longitude" : objectForYelp.longitude
+                      };
+      $.ajax({
+        url: '/send',
+        dataType: 'json',
+        type: 'post',
+        data: searchSpot
+      }).done(function(data){
+        console.log("sent");
+        console.log(data);
+        yelpObject = data;
+        $('.leaflet-popup-content').text("");
+        $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].image_url + ' /></div><hr><p>HI this is a review</p>');
+      });
+    }
+
+
     /////// For coffee shops
-  function setLocationOther(){
+    function setLocationOther(){
     for (var i = 0; i < squareInfo.response.groups[0].items.length; i ++){
       lat = squareInfo.response.groups[0].items[i].venue.location.lat;
       lng = squareInfo.response.groups[0].items[i].venue.location.lng;
       place = squareInfo.response.groups[0].items[i].venue.name;
       trend = new L.LatLng(lat, lng);
-      var markers = new L.MarkerClusterGroup();
-      markers.addLayer(new L.Marker(trend(map)));
       marker = new L.Marker(trend);
       marker.bindPopup(place).openPopup();
       map.addLayer(marker);
@@ -202,7 +202,7 @@ $(function () {
   }
 
 
-  function removeMarker(){
+   function removeMarker(){
     for (var i = 0; i < markerArray.length; i ++){
       map.removeLayer(markerArray[i]);
     }
@@ -215,55 +215,105 @@ $(function () {
       spotToSave = spotsArray[$('.placeName').attr('Id')];
       console.log(spotToSave);
 
-    var spotFave = {"name" : spotToSave.name,
-                    "latitude" : spotToSave.latitude,
-                    "longitude" : spotToSave.longitude,
-                    "address" : spotToSave.address
-    };
+      var spotFave = {"name" : spotToSave.name,
+                      "latitude" : spotToSave.latitude,
+                      "longitude" : spotToSave.longitude,
+                      "address" : spotToSave.address,
+                      "city" : spotToSave.city,
+                      "state" : spotToSave.state,
+                      "phone" : spotToSave.phone,
+                      "website" : spotToSave.website
+                      };
 
-    $.ajax({
-      url: '/save',
-      dataType: 'json',
-      type: 'post',
-      data: spotFave
+      $.ajax({
+        url: '/save',
+        dataType: 'json',
+        type: 'post',
+        data: spotFave
       }).done(function(data){ // Handle the json response
         console.log(data);
+      });
+    });
+  }
+
+  $('#map').on('click', '#faveButton', favoriteClick);
+
+
+
+
+
+    //click hotel button to show nearby hotels
+    function hotelButtonClick(){
+      $('#hotelsButton').click(function(event){
+      event.preventDefault();
+      placeToSearch = spotsArray[$('.placeName').attr('Id')];
+      placeToSearch.lat = lat;
+      placeToSearch.lng = lng;
+      cord = lat +','+ lng;
+      url = 'https://api.foursquare.com/v2/venues/search?categoryId=4bf58dd8d48988d1fa931735&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+       $.ajax({
+        type: 'get',
+        url: url,
+        dataType: 'json'
+      }).done(function(data){
+        console.log(data);
+        nearbyHotelsArray = data.response.venues;
+        removeMarker();
+        for(var i = 0; i < nearbyHotelsArray.length; i ++){
+          trend = new L.LatLng(nearbyHotelsArray[i].location.lat, nearbyHotelsArray[i].location.lng);
+          marker = new L.Marker(trend);
+          marker.bindPopup(nearbyHotelsArray[i].name).openPopup();
+          map.addLayer(marker);
+          markerArray.push(marker);
+          buttonClickValue = "hotels";
+          console.log(buttonClickValue);
+          }
         });
       });
     }
 
-  $('#map').on('click', '#faveButton', favoriteClick);
+  $('#map').on('click', '#hotelsButton', hotelButtonClick);
+
+
   // var popup = L.popup();
   function onMapClick(e) {
-    removeMarker();
-    EMAPS.latlng = e.latlng;
-    var lat = EMAPS.latlng.lat;
-    var lng = EMAPS.latlng.lng;
-    var cord = lat + ',' + lng;
-    var url = "";
-    if (buttonClickValue === "Trending"){
-      url = 'https://api.foursquare.com/v2/venues/trending?ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-    } else if (buttonClickValue === "Cafes") {
-      url = 'https://api.foursquare.com/v2/venues/explore?section=coffee&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-    } else if (buttonClickValue === "NightLife") {
-      url = 'https://api.foursquare.com/v2/venues/explore?section=drinks&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-    }
-    $.ajax({
-      type: 'get',
-      url: url,
-      dataType: 'json'
-    }).done(function(data){
-      console.log(data);
-      squareInfo = data;
-    if (buttonClickValue === "trending"){
-      setLocationTrending();
-    } else if (buttonClickValue === "showFavorites"){
-      setLocationFavorites();
-    } else {
-      setLocationOther();
-    }
+      removeMarker();
+      EMAPS.latlng = e.latlng;
+      var lat = EMAPS.latlng.lat;
+      var lng = EMAPS.latlng.lng;
+      var cord = lat + ',' + lng;
+      var url = "";
+      if (buttonClickValue === "Trending"){
+        url = 'https://api.foursquare.com/v2/venues/trending?ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "Coffee"){
+        url = 'https://api.foursquare.com/v2/venues/explore?section=coffee&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "hotels"){
+        url = 'https://api.foursquare.com/v2/venues/search?categoryId=4bf58dd8d48988d1fa931735&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else {
+        url = 'https://api.foursquare.com/v2/venues/explore?section=bars&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      }
+        $.ajax({
+        type: 'get',
+        url: url,
+        dataType: 'json'
+      }).done(function(data){
+        console.log(data);
+        squareInfo = data;
+        if (buttonClickValue === "Trending"){
+        setLocationTrending();
+        } else if (buttonClickValue === "hotels") {
+        setLocationTrending();
+        } else {
+        setLocationOther();
+       }
     });
   }
   map.on('click', onMapClick);
+
 });
+
+
+
+
+
 
