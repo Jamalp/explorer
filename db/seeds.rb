@@ -3,17 +3,16 @@
 #
 # Examples:
 #
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
+<<<<<<< HEAD
 # Seattle, Wash.  4latitude: 7.6097° 1longitude: 22.3331
 # Syracuse, N.Y.  latitude: 43.0481, longitude: 76.1478
 # Tampa, Fla. latitude: 27.9472, longitude: 82.4586
 # Honolulu, HI latitude: 21.3069° 1longitude: 57.8583
 
 City.delete_all
-
   cities = City.create([{name: 'Anchorage, AK',
                          latitude: 61.1919,
                          longitude: -149.7621},
@@ -104,4 +103,6 @@ City.delete_all
                       {name: 'Tampa, FL',
                         latitude: 27.9472,
                         longitude: -82.4586}
+
                         ])
+

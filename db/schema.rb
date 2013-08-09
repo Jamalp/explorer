@@ -11,7 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20130808221240) do
+=======
+ActiveRecord::Schema.define(:version => 20130808122913) do
+>>>>>>> 1a5a802f2c3dc32be0b784fca086af06818b0b8c
 
   create_table "cities", :force => true do |t|
     t.string   "name"
@@ -41,6 +45,10 @@ ActiveRecord::Schema.define(:version => 20130808221240) do
     t.string   "name",                   :default => "", :null => false
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
+<<<<<<< HEAD
+=======
+    t.string   "name",                   :default => "", :null => false
+>>>>>>> 1a5a802f2c3dc32be0b784fca086af06818b0b8c
     t.integer  "spots_id"
     t.integer  "cities_id"
     t.string   "reset_password_token"

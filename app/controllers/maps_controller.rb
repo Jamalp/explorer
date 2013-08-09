@@ -13,15 +13,16 @@ class MapsController < ApplicationController
       phone: params[:phone],
       website: params[:website]
       )
-     @city_name = params[:city]
-     @state = params[:state]
-     @city_to_search = @city_name + ', ' + @state
-     @city = City.where(name: @city_to_search)
+
+     city_name = params[:city]
+     state = params[:state]
+     city_to_search = city_name + ', ' + state
+     @city = City.where(name: city_to_search)
      @city.first.spots << @spotFave
      @city.first.favorite = true
-
-    current_user.cities << @city
-    current_user.spots << @spotFave
+     current_user.cities << @city
+     current_user.spots << @spotFave
+     current_user
 
     respond_to do |format|
       format.json {render json: @spotFave}
@@ -45,7 +46,6 @@ class MapsController < ApplicationController
       format.json {render json: @cities}
     end
   end
-
 
 
   def send_yelp

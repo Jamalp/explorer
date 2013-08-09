@@ -8,8 +8,8 @@ class CityTable < ActiveRecord::Migration
      t.references :spot
      t.boolean :favorite, default: false
      t.timestamps
-    end
   end
+end
 
   def down
     drop_table :cities

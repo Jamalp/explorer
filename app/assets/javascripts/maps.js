@@ -85,8 +85,6 @@ $(function () {
     trendingButton.on('click', removeMarker());
   });
 
-
-
     $('#showFavoritesButton').click(function(event){
       event.preventDefault();
       buttonClickValue = "showFavorites";
@@ -104,6 +102,9 @@ $(function () {
     });
 
 
+    //Remove favorites layer below
+    function removeFavoritesLayer(){}
+
        //Show favorites
     function setLocationFavorites(){
     for (var i = 0; i < favoritesArray.length; i ++){
@@ -117,7 +118,6 @@ $(function () {
 
     //Remove favorites layer below
     function removeFavoritesLayer(){}
-
 
   //add marker to map
     //place name
@@ -182,6 +182,7 @@ $(function () {
         console.log(data);
         yelpObject = data;
         $('.leaflet-popup-content').text("");
+        $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].rating_img_url_small + ' /></div>');
         $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].image_url + ' /></div><hr><p>HI this is a review</p>');
       });
     }
@@ -311,9 +312,3 @@ $(function () {
   map.on('click', onMapClick);
 
 });
-
-
-
-
-
-

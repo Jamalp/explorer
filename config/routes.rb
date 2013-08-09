@@ -5,4 +5,5 @@ Explorer::Application.routes.draw do
   get '/favorite' => "maps#favorite"
   post '/save', to: 'maps#save'
   get '/show/cities', to: 'maps#show_cities'
+  post '/send', to: 'maps#send_yelp'
 end
