@@ -1,3 +1,4 @@
+
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -15,10 +16,8 @@
 //= require leaflet
 //= require_tree .
 
-// $(function(map){
-//     var map = L.map('map').setView([51.505, -0.09], 13);
 
-// });
+
 
 
 
