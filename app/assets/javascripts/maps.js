@@ -21,6 +21,7 @@ $(function () {
 
   var map = new L.Map('map');
 
+
   function markerClicked() {
   console.log(this.getLatLng().lat);
   lat = this.getLatLng().lat;
@@ -51,6 +52,14 @@ $(function () {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Contributors: <a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA</a>Imagery © <a href="http://cloudmade.com">CloudMade</a>',
     maxZoom: 18
   }).addTo(map);
+
+  var redMarker = L.AwesomeMarkers.icon({
+icon: 'coffee',
+color: 'red'
+})
+
+
+
 
   // Call stuff down here somewhere
   // initialize the map on the "map" div

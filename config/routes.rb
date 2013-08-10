@@ -6,4 +6,5 @@ Explorer::Application.routes.draw do
   post '/save', to: 'maps#save'
   get '/show/cities', to: 'maps#show_cities'
   post '/send', to: 'maps#send_yelp'
+  get 'about', to: 'maps#about'
 end

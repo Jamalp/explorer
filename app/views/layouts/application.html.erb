@@ -4,9 +4,13 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <title>Explorer</title>
   <%= stylesheet_link_tag    "application", media: "all" %>
-  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "application", media: 'all' %>
+  <script src="javascript/leaflet.awesome-markers.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Cardo' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lora:400italic' rel='stylesheet' type='text/css'>
   <%= csrf_meta_tags %>
-  <!-- <link rel="stylesheet" src="bootstrap/css/bootstrap.min.css" media="all" /> -->
+
 
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <%= render 'layouts/header'  %>
@@ -14,8 +18,8 @@
 <body class="body">
  <script src="js/bootstrap.min.js"></script>
 
-  <div class="alert alert-success"><p class="notice"><%= notice %></p></div>
-  <div class="alert alert-danger"><p class="alert"><%= alert %></p></div>
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
 
 
   <%= yield %>

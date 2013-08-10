@@ -47,6 +47,8 @@ class MapsController < ApplicationController
     end
   end
 
+  def about
+  end
 
   def send_yelp
     @searchSpot = Spot.create(

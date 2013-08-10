@@ -6,7 +6,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 
-<<<<<<< HEAD
+
 # Seattle, Wash.  4latitude: 7.6097° 1longitude: 22.3331
 # Syracuse, N.Y.  latitude: 43.0481, longitude: 76.1478
 # Tampa, Fla. latitude: 27.9472, longitude: 82.4586
