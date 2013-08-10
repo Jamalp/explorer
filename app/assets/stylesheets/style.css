@@ -4,8 +4,19 @@
 
 .body {
   /*background-color: #F0F0F0;*/
-  background-color: #3a9aa8;
+
 }
+
+#indexbody {
+   /*background-color: #83D8D9;*/
+    background: url(indexbg.jpg) no-repeat center center fixed;
+    /*background-opacity: 0.5;*/
+    background-size: cover;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+
 #logo a {
   color: black;
 
@@ -24,10 +35,8 @@
   margin-bottom: auto;
   height: 5%;
   /*float: left;*/
-  background-color: #FFFFF9;
-
-
-
+  /*background-color: #FFFFF9;*/
+  background: none;
 }
 
 #header{
@@ -51,22 +60,23 @@
 
 #sidebar {
   background: none;
-  margin-left: 38em;
+  margin-left: 9.8em;
+  margin-bottom: 3.5em;
 }
 
 #devise {
-  float: right;
-  margin-top: -20px;
+  /*float: right;*/
+  margin-top: -3.5em;
 }
 
 #map {
-  width: 1200px;
+  width: 100em;
   height: 50em;
   border-radius: 5px;
   background-color: white;
   /*float: right;*/
   margin-left: auto;
-  margin-top: 8em;
+  margin-top: 6em;
   margin-bottom: auto;
   margin-right: auto;
   border-style: solid;
@@ -82,10 +92,60 @@
     min-height: 100%;
 }
 
+#abouth1 {
+  margin-left: 4.5em;
+  font-family: 'Playball', cursive;
+  margin-top: 2em;
+}
+
 #aboutp {
   font-family: 'Cardo', serif;
-  font-size: 18px;
+  font-size: 1.5em;
   width: 50%;
   height: 50%;
   margin-left: 8em;
+  font-weight: 600;
+
+}
+
+#aboutp a {
+  text-decoration: none;
+  /*color: #333540;*/
+}
+
+.newdevise label {
+  color: black;
+  font-family: 'lora', serif;
+  font-size: 1.5em;
+}
+
+
+
+.newdevisebutton {
+  margin-top: 50em;
+  background-color: red;
+}
+#newdevisename {
+  margin-left: 30em;
+  margin-top: 15em;
+  float:left;
+}
+
+#newdeviseemail {
+  margin-right: 30em;
+  margin-top: 15em;
+  float: right;
+}
+
+
+#newdevisepassword {
+  margin-left: 30em;
+  margin-bottom: 15em;
+  float:left;
+}
+
+#newdevisepasswordconfirm {
+  margin-right: 30em;
+  margin-bottom: 15em;
+  float: right;
 }
