@@ -97,6 +97,11 @@ $(function () {
      event.preventDefault();
     buttonClickValue = button.text();
     button.on('click', removeMarker());
+    $('h1').text(buttonClickValue);
+    $('h1').show();
+    $('#map').show();
+    $('#favoriteCities').hide();
+    $('#faveCitiesButton').show();
     console.log(button.text());
     });
    }
@@ -117,6 +122,16 @@ $(function () {
       $('#showFavoritesButton').on('click', removeMarker());
       $('#showFavoritesButton').on('click', setLocationFavorites());
     });
+
+
+    $('#showMap').click(function(event){
+      $('#faveCitiesButton').show();
+      $('#favoriteCities').hide();
+      $('#map').show();
+       map.setView(new L.LatLng(37.8, -96), 5);
+    });
+
+
 
 
        //Show favorites
@@ -169,7 +184,7 @@ $(function () {
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
       popup = L.popup()
-      .setContent('<h2 class="placeName" id="'+ i +'">' + place + '</h2><h3>' + address + '</h3><hr><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-info btn-xs">Note</button></div><br><button id="hotelsButton" class="btn btn-success btn-xs">Nearby Hotels</button>');
+      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">nearby hotels</button></br><button id="yelpButton">yelp review</button>');
       marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
@@ -181,6 +196,7 @@ $(function () {
 
     //send the object to be used in the yelp request to the controller
     function sendYelp(){
+      $('#yelpButton').remove();
       objectForYelp = spotsArray[$('.placeName').attr('Id')];
       console.log(objectForYelp);
       var searchSpot = {"name" : objectForYelp.name,
@@ -197,7 +213,9 @@ $(function () {
         console.log(data);
         yelpObject = data;
         $('.leaflet-popup-content').text("");
-        $('.leaflet-popup-content').append('<h2><a href=' + yelpObject.businesses[0].url + '>' + yelpObject.businesses[0].name + '</a></h2><hr><img src=' + yelpObject.businesses[0].image_url + ' /><br><img src=' + yelpObject.businesses[0].rating_img_url + ' /><p>' + yelpObject.businesses[0].review_count + '</p><hr><p>' +yelpObject.businesses[0].display_phone + '</p><br><p>' + yelpObject.businesses[0].location.display_address[0] + ', ' + yelpObject.businesses[0].location.display_address[3] +'</p>');
+        $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].rating_img_url_small + ' /></div>');
+        $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].image_url + ' /></div><hr><p>HI this is a review</p>');
+        $('.leaflet-popup-content').append('<p class="placeName" id="'+ i +'">' + objectForYelp.name + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">nearby hotels</button>');
       });
     }
 
@@ -230,7 +248,7 @@ $(function () {
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
       popup = L.popup()
-      .setContent('<h2 class="placeName" id="'+ i +'">' + place + '</h2><h3>' + address + '</h3><hr><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-info btn-xs">Note</button></div><br><button id="hotelsButton" class="btn btn-success btn-xs">Nearby Hotels</button>');
+      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">nearby hotels</button></br><button id="yelpButton">yelp review</button>');
       marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
@@ -297,9 +315,33 @@ $(function () {
         nearbyHotelsArray = data.response.venues;
         removeMarker();
         for(var i = 0; i < nearbyHotelsArray.length; i ++){
-          trend = new L.LatLng(nearbyHotelsArray[i].location.lat, nearbyHotelsArray[i].location.lng);
+          lat = nearbyHotelsArray[i].location.lat;
+          lng = nearbyHotelsArray[i].location.lng;
+          place = nearbyHotelsArray[i].name;
+          city = nearbyHotelsArray[i].location.city;
+          state = nearbyHotelsArray[i].location.state;
+          address = nearbyHotelsArray[i].location.address;
+          phone = nearbyHotelsArray[i].contact.formattedPhone;
+          website = nearbyHotelsArray[i].url;
+          placeHash = {};
+          placeHash['name']= place;
+          placeHash['latitude']= lat;
+          placeHash['longitude']= lng;
+          placeHash['address']= address;
+          placeHash['city']= city;
+          console.log(city);
+          placeHash['state']= state;
+          console.log(state);
+          if (phone != 'undefined') {
+          placeHash['phone']= phone;
+          }
+          placeHash['website']= website;
+          spotsArray.push(placeHash);
+          trend = new L.LatLng(lat, lng);
           marker = new L.Marker(trend);
-          marker.bindPopup(nearbyHotelsArray[i].name).openPopup();
+          popup = L.popup()
+          .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="yelpButton">yelp review</button>');
+          marker.bindPopup(popup).openPopup();
           map.addLayer(marker);
           markerArray.push(marker);
           buttonClickValue = "hotels";
@@ -363,7 +405,10 @@ $(function () {
 
     $('#faveCitiesButton').click(function(event){
       event.preventDefault();
-      this.remove();
+      $('h1').hide();
+      $('#faveCitiesButton').hide();
+      $('#showMap').show();
+      $('#favoriteCities').show();
       $.ajax({
         url: '/show/favorite_cities',
         dataType: 'json',
@@ -379,9 +424,9 @@ $(function () {
     });
 
 
-function appendCity(city){
-  showSpotsButton = $('<button class="showSpots">See spots</button>');
-  $('#favoriteCities').append($('<li id="' + city.id + '">' + city.name + '</li>').append(showSpotsButton));
+  function appendCity(city){
+    showSpotsButton = $('<button class="showSpots">See spots</button>');
+    $('#favoriteCities').append($('<li id="' + city.id + '">' + city.name + '</li>').append(showSpotsButton));
 
 
   showSpotsButton.click(function(){

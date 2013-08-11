@@ -13,7 +13,6 @@ class MapsController < ApplicationController
       phone: params[:phone],
       website: params[:website]
       )
-
      city_name = params[:city]
      state = params[:state]
      city_to_search = city_name + ', ' + state
@@ -22,7 +21,6 @@ class MapsController < ApplicationController
      @city.first.favorite = true
      current_user.cities << @city
      current_user.spots << @spotFave
-     current_user
 
     respond_to do |format|
       format.json {render json: @spotFave}
@@ -47,8 +45,7 @@ class MapsController < ApplicationController
     end
   end
 
-  def about
-  end
+
 
   def send_yelp
     @searchSpot = Spot.create(
@@ -73,6 +70,44 @@ class MapsController < ApplicationController
       format.json {render json: @response}
     end
   end
+
+
+  def show_favorite_cities
+    @favorite_cities = current_user.cities
+    respond_to do |format|
+      # format.js {}
+      format.json {render json: @favorite_cities}
+    end
+  end
+
+
+def show_spots_by_city
+  @favecity = City.where(name: params[:name])
+  @favecityspots = @favecity.first.spots
+  respond_to do |format|
+    # format.js {}
+    format.json {render json: @favecityspots}
+  end
+end
+
+
+def show_spot_details
+  @spot_details = Spot.find(params[:id])
+  respond_to do |format|
+    # format.js {}
+    format.json {render json: @spot_details}
+  end
+end
+
+
+def destroy
+  @spot_to_delete = Spot.find(params[:id])
+  @spot_to_delete.delete
+    respond_to do |format|
+    # format.js {}
+    format.json {render json: @spot_to_delete}
+  end
+end
 
   # def expedia
   #   # Instentiate api object
