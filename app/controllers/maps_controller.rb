@@ -81,42 +81,32 @@ class MapsController < ApplicationController
   end
 
 
-def show_spots_by_city
-  @favecity = City.where(name: params[:name])
-  @favecityspots = @favecity.first.spots
-  respond_to do |format|
-    # format.js {}
-    format.json {render json: @favecityspots}
-  end
-end
-
-
-def show_spot_details
-  @spot_details = Spot.find(params[:id])
-  respond_to do |format|
-    # format.js {}
-    format.json {render json: @spot_details}
-  end
-end
-
-
-def destroy
-  @spot_to_delete = Spot.find(params[:id])
-  @spot_to_delete.delete
+  def show_spots_by_city
+    @favecity = City.where(name: params[:name])
+    @favecityspots = @favecity.first.spots
     respond_to do |format|
-    # format.js {}
-    format.json {render json: @spot_to_delete}
+      # format.js {}
+      format.json {render json: @favecityspots}
+    end
   end
-end
 
-  # def expedia
-  #   # Instentiate api object
-  #   api = Expedia::Api.new
 
-  #   # Method to search for a hotel. see http://developer.ean.com/docs/read/hotels/version_3/request_hotel_list
-  #   response = api.get_list({:propertyName => 'Hotel Moa Berlin', :destinationString => 'berlin'})
+  def show_spot_details
+    @spot_details = Spot.find(params[:id])
+    respond_to do |format|
+      # format.js {}
+      format.json {render json: @spot_details}
+    end
+  end
 
-  #   # execute this method to know if there is any exception
-  #   response.exception? # false if success
-  # end
+
+  def destroy
+    @spot_to_delete = Spot.find(params[:id])
+    @spot_to_delete.delete
+      respond_to do |format|
+      # format.js {}
+      format.json {render json: @spot_to_delete}
+    end
+  end
+
 end
