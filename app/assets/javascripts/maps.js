@@ -169,7 +169,7 @@ $(function () {
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
       popup = L.popup()
-      .setContent('<h2 class="placeName" id="'+ i +'">' + place + '</h2><br/><p>' + address + '</p><hr><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="hotelsButton" class="btn btn-info btn-xs">Nearby Hotels</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-warning btn-xs">Note</button></div>');
+      .setContent('<h2 class="placeName" id="'+ i +'">' + place + '</h2><h3>' + address + '</h3><hr><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-info btn-xs">Note</button></div><br><button id="hotelsButton" class="btn btn-success btn-xs">Nearby Hotels</button>');
       marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
@@ -230,7 +230,7 @@ $(function () {
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
       popup = L.popup()
-      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="hotelsButton" class="btn btn-info btn-xs">Nearby Hotels</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-warning btn-xs">Note</button></div>');
+      .setContent('<h2 class="placeName" id="'+ i +'">' + place + '</h2><h3>' + address + '</h3><hr><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-info btn-xs">Note</button></div><br><button id="hotelsButton" class="btn btn-success btn-xs">Nearby Hotels</button>');
       marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
