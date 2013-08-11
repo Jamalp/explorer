@@ -169,7 +169,7 @@ $(function () {
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
       popup = L.popup()
-      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">Nearby Hotels</button></br><button id="yelpButton" data-toggle="modal" data-target="#myModal">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal">Note</button>');
+      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><hr><br/><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="hotelsButton" class="btn btn-info btn-xs">Nearby Hotels</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-warning btn-xs">Note</button></div>');
       marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
@@ -230,7 +230,7 @@ $(function () {
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
       popup = L.popup()
-      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">Nearby Hotels</button></br><button id="yelpButton">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal">Note</button>');
+      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="hotelsButton" class="btn btn-info btn-xs">Nearby Hotels</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-warning btn-xs">Note</button></div>');
       marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
