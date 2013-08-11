@@ -23,6 +23,8 @@ end
 
 group :development do
   gem 'sqlite3'
+  gem 'jasmine'
+  gem 'rspec'
 end
 
 

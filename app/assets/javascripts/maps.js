@@ -213,8 +213,7 @@ $(function () {
         console.log(data);
         yelpObject = data;
         $('.leaflet-popup-content').text("");
-        $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].rating_img_url_small + ' /></div>');
-        $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].image_url + ' /></div><hr><p>HI this is a review</p>');
+        $('.leaflet-popup-content').append('<h2 class="placeName" id="'+ i +'">' + place + '</h2><br/><p>' + address + '</p><hr><div class="btn-group"><button id="faveButton" class="btn btn-info btn-xs">fave</button></br><button id="hotelsButton" class="btn btn-info btn-xs">Nearby Hotels</button></br><button id="yelpButton" class="btn btn-info btn-xs">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal" class="btn btn-warning btn-xs">Note</button></div>');
         $('.leaflet-popup-content').append('<p class="placeName" id="'+ i +'">' + objectForYelp.name + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">nearby hotels</button>');
       });
     }
@@ -364,21 +363,21 @@ $(function () {
       var url = "";
       if (buttonClickValue === "Trending"){
         url = 'https://api.foursquare.com/v2/venues/trending?ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-      } else if (buttonClickValue === "Coffee"){
+      } else if (buttonClickValue === "Cafes"){
         url = 'https://api.foursquare.com/v2/venues/explore?section=coffee&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
       } else if (buttonClickValue === "hotels"){
         url = 'https://api.foursquare.com/v2/venues/search?categoryId=4bf58dd8d48988d1fa931735&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-      } else if (buttonClickValue === "Bars"){
+      } else if (buttonClickValue === "Nightlife"){
         url = 'https://api.foursquare.com/v2/venues/explore?section=drinks&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-      } else if (buttonClickValue === "Food"){
+      } else if (buttonClickValue === "Restaurants"){
         url = 'https://api.foursquare.com/v2/venues/explore?section=food&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-      } else if (buttonClickValue === "Shops"){
+      } else if (buttonClickValue === "Shopping"){
         url = 'https://api.foursquare.com/v2/venues/explore?section=shops&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
       } else if (buttonClickValue === "Arts"){
         url = 'https://api.foursquare.com/v2/venues/explore?section=arts&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
       } else if (buttonClickValue === "Outdoors"){
         url = 'https://api.foursquare.com/v2/venues/explore?section=outdoors&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
-      } else if (buttonClickValue === "Sights"){
+      } else if (buttonClickValue === "Attractions"){
         url = 'https://api.foursquare.com/v2/venues/explore?section=sights&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
       } else if (buttonClickValue === "Top Picks"){
         url = 'https://api.foursquare.com/v2/venues/explore?section=topPicks&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
