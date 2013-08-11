@@ -14,13 +14,14 @@ var defaultCitiesMarkerArray = [];
 var nearbyHotelsArray = [];
 var placeHash = "";
 var yelpObject = "";
-
+var favoriteCitiesArray = "";
+var faveSpotsByCityArray = [];
+var spotDetailsArray = "";
 
 // put JS code in here
 $(function () {
 
   var map = new L.Map('map');
-
 
   function markerClicked() {
   console.log(this.getLatLng().lat);
@@ -53,15 +54,7 @@ $(function () {
     maxZoom: 18
   }).addTo(map);
 
-  var redMarker = L.AwesomeMarkers.icon({
-icon: 'coffee',
-color: 'red'
-})
 
-
-
-
-  // Call stuff down here somewhere
   // initialize the map on the "map" div
   L.Icon.Default.imagePath = 'http://api.tiles.mapbox.com/mapbox.js/v1.0.0beta0.0/images';
 
@@ -71,28 +64,43 @@ color: 'red'
 
   map.setView(new L.LatLng(37.8, -96), 5);
 
-  var coffeeButton = $('#coffee');
-  var barsButton = $('#bars');
-  var trendingButton = $('#trending');
 
-   coffeeButton.click(function(event){
-    event.preventDefault();
-    buttonClickValue = coffeeButton.text();
-    coffeeButton.on('click', removeMarker());
-    // $('.navbar').append(buttonClickValue);
-  });
+    var coffeeButton = $('#coffee');
+    var barsButton = $('#bars'); //drinks?
+    var trendingButton = $('#trending');
+    var foodButton = $('#food');
+    var shopsButton = $('#shops');
+    var artsButton = $('#arts');
+    var outdoorsButton = $('#outdoors');
+    var sightsButton = $('#sights');
+    var topPicksButton = $('#topPicks');
 
-   barsButton.click(function(event){
-    event.preventDefault();
-    buttonClickValue = barsButton.text();
-    barsButton.on('click', removeMarker());
-  });
+    var buttonArray = [
+    coffeeButton,
+    barsButton,
+    trendingButton,
+    foodButton,
+    shopsButton,
+    artsButton,
+    outdoorsButton,
+    sightsButton,
+    topPicksButton
+    ];
 
-  trendingButton.click(function(event){
-    event.preventDefault();
-    buttonClickValue = trendingButton.text();
-    trendingButton.on('click', removeMarker());
-  });
+    for(var i = 0; i < buttonArray.length; i ++){
+      buttonArray[i].on('click', searchButtonClick(buttonArray[i]));
+    }
+
+
+   function searchButtonClick(button){
+    button.click(function(event){
+     event.preventDefault();
+    buttonClickValue = button.text();
+    button.on('click', removeMarker());
+    console.log(button.text());
+    });
+   }
+
 
     $('#showFavoritesButton').click(function(event){
       event.preventDefault();
@@ -111,9 +119,6 @@ color: 'red'
     });
 
 
-    //Remove favorites layer below
-    function removeFavoritesLayer(){}
-
        //Show favorites
     function setLocationFavorites(){
     for (var i = 0; i < favoritesArray.length; i ++){
@@ -127,6 +132,7 @@ color: 'red'
 
     //Remove favorites layer below
     function removeFavoritesLayer(){}
+
 
   //add marker to map
     //place name
@@ -163,7 +169,7 @@ color: 'red'
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
       popup = L.popup()
-      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">nearby hotels</button></br><button id="yelpButton">yelp review</button>');
+      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">Nearby Hotels</button></br><button id="yelpButton" data-toggle="modal" data-target="#myModal">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal">Note</button>');
       marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
@@ -191,8 +197,7 @@ color: 'red'
         console.log(data);
         yelpObject = data;
         $('.leaflet-popup-content').text("");
-        $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].rating_img_url_small + ' /></div>');
-        $('.leaflet-popup-content').append('<div><img src=' + yelpObject.businesses[0].image_url + ' /></div><hr><p>HI this is a review</p>');
+        $('.leaflet-popup-content').append('<h2><a href=' + yelpObject.businesses[0].url + '>' + yelpObject.businesses[0].name + '</a></h2><hr><img src=' + yelpObject.businesses[0].image_url + ' /><br><img src=' + yelpObject.businesses[0].rating_img_url + ' /><p>' + yelpObject.businesses[0].review_count + '</p><hr><p>' +yelpObject.businesses[0].display_phone + '</p><br><p>' + yelpObject.businesses[0].location.display_address[0] + ', ' + yelpObject.businesses[0].location.display_address[3] +'</p>');
       });
     }
 
@@ -203,9 +208,30 @@ color: 'red'
       lat = squareInfo.response.groups[0].items[i].venue.location.lat;
       lng = squareInfo.response.groups[0].items[i].venue.location.lng;
       place = squareInfo.response.groups[0].items[i].venue.name;
+      city = squareInfo.response.groups[0].items[i].venue.location.city;
+      state = squareInfo.response.groups[0].items[i].venue.location.state;
+      address = squareInfo.response.groups[0].items[i].venue.location.address + ', ' + city + ', ' + state;
+      phone = squareInfo.response.groups[0].items[i].venue.formattedPhone;
+      website = squareInfo.response.groups[0].items[i].venue.url;
+      placeHash = {};
+      placeHash['name']= place;
+      placeHash['latitude']= lat;
+      placeHash['longitude']= lng;
+      placeHash['address']= address;
+      placeHash['city']= city;
+      console.log(city);
+      placeHash['state']= state;
+      console.log(state);
+      if (phone != 'undefined') {
+      placeHash['phone']= phone;
+      }
+      placeHash['website']= website;
+      spotsArray.push(placeHash);
       trend = new L.LatLng(lat, lng);
       marker = new L.Marker(trend);
-      marker.bindPopup(place).openPopup();
+      popup = L.popup()
+      .setContent('<p class="placeName" id="'+ i +'">' + place + '</p><br/><p>' + address + '</p><br/><button id="faveButton">fave</button></br><button id="hotelsButton">Nearby Hotels</button></br><button id="yelpButton">Yelp</button><br><button id="noteButton" data-toggle="modal" data-target="#myModal">Note</button>');
+      marker.bindPopup(popup).openPopup();
       map.addLayer(marker);
       markerArray.push(marker);
     }
@@ -222,6 +248,7 @@ color: 'red'
   function favoriteClick(){
     $('#faveButton').click(function(event){
       event.preventDefault();
+      $('#faveButton').remove();
       spotToSave = spotsArray[$('.placeName').attr('Id')];
       console.log(spotToSave);
 
@@ -299,8 +326,22 @@ color: 'red'
         url = 'https://api.foursquare.com/v2/venues/explore?section=coffee&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
       } else if (buttonClickValue === "hotels"){
         url = 'https://api.foursquare.com/v2/venues/search?categoryId=4bf58dd8d48988d1fa931735&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "Bars"){
+        url = 'https://api.foursquare.com/v2/venues/explore?section=drinks&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "Food"){
+        url = 'https://api.foursquare.com/v2/venues/explore?section=food&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "Shops"){
+        url = 'https://api.foursquare.com/v2/venues/explore?section=shops&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "Arts"){
+        url = 'https://api.foursquare.com/v2/venues/explore?section=arts&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "Outdoors"){
+        url = 'https://api.foursquare.com/v2/venues/explore?section=outdoors&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "Sights"){
+        url = 'https://api.foursquare.com/v2/venues/explore?section=sights&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+      } else if (buttonClickValue === "Top Picks"){
+        url = 'https://api.foursquare.com/v2/venues/explore?section=topPicks&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
       } else {
-        url = 'https://api.foursquare.com/v2/venues/explore?section=bars&ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
+        url = 'https://api.foursquare.com/v2/venues/trending?ll=' + cord + '&client_id=FLORXQIYM4IR2BQJQS52RRKJIDTIYE3PVGUXPAEOCRLPLTMF&client_secret=0E30B1EZG3RQK0UMKPIU05LNMSZOOAKVBR4QFOJFO1KAGEEG&v=20130316';
       }
         $.ajax({
         type: 'get',
@@ -309,9 +350,7 @@ color: 'red'
       }).done(function(data){
         console.log(data);
         squareInfo = data;
-        if (buttonClickValue === "Trending"){
-        setLocationTrending();
-        } else if (buttonClickValue === "hotels") {
+        if (buttonClickValue === ("Trending" || "hotels")){
         setLocationTrending();
         } else {
         setLocationOther();
@@ -320,4 +359,86 @@ color: 'red'
   }
   map.on('click', onMapClick);
 
-});
+
+
+    $('#faveCitiesButton').click(function(event){
+      event.preventDefault();
+      this.remove();
+      $.ajax({
+        url: '/show/favorite_cities',
+        dataType: 'json',
+        type: 'get'
+      }).done(function(data){
+        console.log(data);
+        favoriteCitiesArray = data;
+        $('#map').fadeOut();
+        for (var i = 0; i < favoriteCitiesArray.length; i ++){
+          appendCity(favoriteCitiesArray[i]);
+        }
+      });
+    });
+
+
+function appendCity(city){
+  showSpotsButton = $('<button class="showSpots">See spots</button>');
+  $('#favoriteCities').append($('<li id="' + city.id + '">' + city.name + '</li>').append(showSpotsButton));
+
+
+  showSpotsButton.click(function(){
+    $.ajax({
+    url: '/show/favorite_cities/' + city.name,
+    type: 'get',
+    dataType: 'json'
+    }).done(function(data){
+      console.log(data);
+      faveSpotsByCityArray = data;
+      for(var i = 0; i < faveSpotsByCityArray.length; i ++){
+        detailsButton = $('<button class="spotDetails" id="' + faveSpotsByCityArray[i].id +'">Details</button>');
+        detailsButton.click(function(){
+          detailsButton.remove();
+          id = this.id * 2;
+        $.ajax({
+         url: '/show/spot_details/' + this.id,
+         type: 'get',
+        dataType: 'json'
+        }).done(function(data){
+        console.log(data);
+        spotDetailsArray = data;
+        $('#' + id).append($('<ul></ul>')).append($('<li>' + spotDetailsArray.address + '</li>')).append($('<li>' + spotDetailsArray.phone + '</li>')).append($('<li>' + spotDetailsArray.website + '</li>'));
+      });
+    });
+        deleteButton = $('<button class="delete" id="' + faveSpotsByCityArray[i].id +'">Delete</button>');
+        deleteButton.click(function(){
+          id = this.id;
+          $('#' + id * 2).remove();
+          this.remove();
+          $('#' + id).remove();
+          $.ajax({
+            url: '/delete/' + id,
+            type: 'delete',
+            dataType: 'script'
+          }).done(function(data){
+            console.log(data);
+            alert("spot deleted!");
+          });
+        });
+
+        $('#' + faveSpotsByCityArray[i].city_id).append($('<ul></ul>').append($('<li id="' + faveSpotsByCityArray[i].id * 2 + '">' + faveSpotsByCityArray[i].name + '</li>')).append(detailsButton).append(deleteButton));
+      }
+    });
+  });
+
+
+}
+
+
+
+
+
+}); //closing function onload
+
+
+
+
+
+

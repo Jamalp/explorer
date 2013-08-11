@@ -19,6 +19,7 @@
 
 #logo a {
   color: black;
+  text-decoration: none;
 
 }
 
@@ -93,14 +94,14 @@
 }
 
 #abouth1 {
-  margin-left: 4.5em;
+  margin-left: 3.8em;
   font-family: 'Playball', cursive;
   margin-top: 2em;
 }
 
 #aboutp {
   font-family: 'Cardo', serif;
-  font-size: 1.5em;
+  font-size: 1.3em;
   width: 50%;
   height: 50%;
   margin-left: 8em;
@@ -148,4 +149,10 @@
   margin-right: 30em;
   margin-bottom: 15em;
   float: right;
+}
+
+.modal {
+  left:40em;
+  width: 45em;
+  height: 22em;
 }
