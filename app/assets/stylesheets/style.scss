@@ -152,7 +152,10 @@
 }
 
 .modal {
-  left:40em;
+  left:30em;
   width: 45em;
-  height: 22em;
+  height: 23em;
+  top: 10em;
+  overflow-y: none;
+  background: none;
 }
