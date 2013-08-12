@@ -2,11 +2,6 @@
 
 /*.map { height: 180px; }*/
 
-.body {
-  /*background-color: #F0F0F0;*/
-
-}
-
 #indexbody {
    /*background-color: #83D8D9;*/
     background: url(indexbg.jpg) no-repeat center center fixed;
@@ -167,6 +162,7 @@
   border-color: blue;
 }
 
-.favoriteCities li {
+.favoriteCities ol li {
   font-size: 22em;
+  margin-top: 5em;
 }
